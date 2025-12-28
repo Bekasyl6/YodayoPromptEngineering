@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompting Guides</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom scrollbar for a polished look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1e24;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        
+        /* Card hover effect */
+        .guide-card {
+            transition: all 0.2s ease;
+        }
+        .guide-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            border-color: #818cf8; /* Indigo-400 */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen font-sans selection:bg-indigo-500 selection:text-white">
+
+    <div class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Header Section -->
+        <div class="text-center mb-10">
+            <div class="flex items-center justify-center mb-4">
+                <i data-lucide="library" class="w-10 h-10 text-indigo-400 mr-3"></i>
+                <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+                    Prompting Guides
+                </h1>
+            </div>
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-400">
+                Curated references organized by topic.
+            </p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="max-w-xl mx-auto mb-10 relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i data-lucide="search" class="h-5 w-5 text-gray-400"></i>
+            </div>
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Find a guide (e.g., 'hair', 'lighting')..." 
+                class="block w-full pl-10 pr-3 py-3 border border-gray-700 rounded-xl leading-5 bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:bg-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out shadow-lg"
+            >
+        </div>
+
+        <!-- Content Container -->
+        <div id="contentContainer" class="space-y-12">
+            <!-- Categories will be injected here -->
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center py-12">
+            <i data-lucide="ghost" class="w-12 h-12 text-gray-600 mx-auto mb-4"></i>
+            <p class="text-gray-500 text-lg">No guides found matching your search.</p>
+        </div>
+
+        <footer class="mt-16 text-center text-gray-500 text-sm border-t border-gray-800 pt-8">
+            <p>Generated Collection &bull; Local Resource</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Categorized Data
+        const categories = [
+            {
+                name: "Technical & Beginner Guides",
+                icon: "book-open",
+                items: [
+                    { title: "Ultimate Beginners Guide", url: "https://yodayo.com/posts/7781b781-3ac8-4ed7-841e-2d9fb34e9fe0", icon: "book-open" },
+                    { title: "How to Build Better Prompt", url: "https://yodayo.com/posts/efd19f4f-4758-414e-9dba-63ea8945e63a", icon: "sparkles" },
+                    { title: "How to use () []", url: "https://yodayo.com/posts/bb46b34e-6d53-4c85-a34a-bd0a441cf010", icon: "code" },
+                    { title: "Using Reference Images", url: "https://yodayo.com/posts/99da0f4b-b33e-4b5e-808e-c0744923f0ad", icon: "image-plus" },
+                    { title: "Img2Img Guide", url: "https://yodayo.com/posts/cfa5aa8c-21a9-4d31-94c9-22f2b9a5ac63", icon: "wand-2" }
+                ]
+            },
+            {
+                name: "Controlnet & Advanced",
+                icon: "settings-2",
+                items: [
+                    { title: "Controlnet Guide", url: "https://yodayo.com/posts/f3c0d357-9c0b-4e5d-b780-0cb70fdb1868", icon: "book" },
+                    { title: "Controlnet Tricks", url: "https://yodayo.com/posts/6b0c6011-7a7b-4dfd-a63c-1c45619869e6", icon: "zap" },
+                    { title: "Controlnet Ref 1", url: "https://yodayo.com/posts/86161a63-60f9-485a-b585-dca50f6e744e", icon: "image" },
+                    { title: "Controlnet Ref 2", url: "https://yodayo.com/posts/e2a5b8df-f3d1-4285-b222-11bf4a7c1790", icon: "image" },
+                    { title: "Controlnet Ref 3", url: "https://yodayo.com/posts/fbdf700c-ab96-4cfa-ab6d-4ab1c004e3e4", icon: "image" },
+                    { title: "Controlnet Ref 4", url: "https://yodayo.com/posts/711353a5-072f-4e2d-b651-eecbb298c13e", icon: "image" }
+                ]
+            },
+            {
+                name: "Character Features",
+                icon: "user",
+                items: [
+                    { title: "Facial Expressions", url: "https://yodayo.com/posts/77a0208b-717a-4ebc-9ee4-42b630546e7e", icon: "smile" },
+                    { title: "Facial Expressions 2", url: "https://yodayo.com/posts/f7adf2e8-f514-4dbd-b7f6-1c096b1963c2", icon: "smile-plus" },
+                    { title: "Lots of Facials", url: "https://yodayo.com/posts/d70904c6-3cad-4d83-b753-9a9d4bc4be37", icon: "laugh" },
+                    { title: "Hairstyles", url: "https://yodayo.com/posts/130f7c12-d924-4484-bf7a-0eb80abda382", icon: "scissors" },
+                    { title: "Lots of Hairstyles", url: "https://yodayo.com/posts/e95e3f1b-ed66-4a89-956c-0d21ca199ee7", icon: "scissors" },
+                    { title: "Body Shapes", url: "https://yodayo.com/posts/43236b61-2b35-4588-a466-5acc77a6c11b", icon: "user-check" },
+                    { title: "Breast Details", url: "https://yodayo.com/posts/e6a288cf-4be6-474d-82b5-f2850ef65c24", icon: "user" },
+                    { title: "Models Styles", url: "https://yodayo.com/posts/17c5581f-0519-4d15-a22b-bd799a463c4d", icon: "palette" },
+                    { title: "Model Comparison", url: "https://yodayo.com/posts/3a5ef2cb-4bf3-4636-ae8e-d8bb2f569e36", icon: "scale" },
+                    { title: "Vtubers Guide", url: "https://yodayo.com/posts/67d69094-166e-4035-ba56-5e366f2cce17", icon: "tv" }
+                ]
+            },
+            {
+                name: "Poses",
+                icon: "person-standing",
+                items: [
+                    { title: "Poses", url: "https://yodayo.com/posts/05bb5771-acba-4cd4-ad24-ea0b98413f60", icon: "person-standing" },
+                    { title: "Poses 2", url: "https://yodayo.com/posts/6fcd1ff6-1390-46fb-9a22-eff69a01e62b", icon: "person-standing" },
+                    { title: "Poses for 2 Characters", url: "https://yodayo.com/posts/76b8d35d-9e35-49c8-9a36-e2260c1645ae", icon: "users" }
+                ]
+            },
+            {
+                name: "Environment & Composition",
+                icon: "image",
+                items: [
+                    { title: "Backgrounds", url: "https://yodayo.com/posts/1a37ba2e-7c4e-4260-b2fb-1d65b3333318", icon: "image" },
+                    { title: "Background List", url: "https://yodayo.com/posts/bd7f4f29-789a-478b-b199-cab22f7221ae", icon: "images" },
+                    { title: "Lightings", url: "https://yodayo.com/posts/31a515c2-25b4-4316-ac4b-515fd28ea7bc", icon: "sun" },
+                    { title: "Camera Angles", url: "https://yodayo.com/posts/81692b40-a810-4dcb-a09b-25d995eb1990", icon: "camera" }
+                ]
+            }
+        ];
+
+        const contentContainer = document.getElementById('contentContainer');
+        const searchInput = document.getElementById('searchInput');
+        const noResults = document.getElementById('noResults');
+
+        // Function to create card HTML
+        function createCard(item) {
+            return `
+                <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="guide-card group relative flex flex-col p-4 bg-gray-800 border border-gray-700 rounded-xl hover:bg-gray-750 text-left h-full">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="p-2 bg-gray-900 rounded-md group-hover:bg-indigo-900/30 transition-colors">
+                            <i data-lucide="${item.icon}" class="w-5 h-5 text-indigo-400 group-hover:text-indigo-300"></i>
+                        </div>
+                        <i data-lucide="external-link" class="w-3.5 h-3.5 text-gray-600 group-hover:text-gray-400 opacity-0 group-hover:opacity-100 transition-all"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white group-hover:text-indigo-300 transition-colors mb-1 leading-tight">
+                        ${item.title}
+                    </h3>
+                </a>
+            `;
+        }
+
+        function renderCategories(filterText = "") {
+            contentContainer.innerHTML = "";
+            let hasResults = false;
+
+            categories.forEach(category => {
+                // Filter items within the category
+                const filteredItems = category.items.filter(item => 
+                    item.title.toLowerCase().includes(filterText.toLowerCase())
+                );
+
+                if (filteredItems.length > 0) {
+                    hasResults = true;
+                    
+                    // Create section container
+                    const section = document.createElement('div');
+                    section.className = "bg-gray-800/50 p-6 rounded-2xl border border-gray-800";
+                    
+                    // Create Header
+                    const headerHTML = `
+                        <div class="flex items-center mb-5 pb-2 border-b border-gray-700/50">
+                            <i data-lucide="${category.icon}" class="w-6 h-6 text-indigo-400 mr-3"></i>
+                            <h2 class="text-xl font-bold text-white">${category.name}</h2>
+                            <span class="ml-3 text-xs font-medium px-2.5 py-0.5 rounded bg-gray-700 text-gray-300">${filteredItems.length}</span>
+                        </div>
+                    `;
+
+                    // Create Grid
+                    // Adjusted grid cols: sm:2, lg:4, xl:5 for higher density
+                    const gridHTML = `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+                            ${filteredItems.map(createCard).join('')}
+                        </div>
+                    `;
+
+                    section.innerHTML = headerHTML + gridHTML;
+                    contentContainer.appendChild(section);
+                }
+            });
+
+            if (!hasResults) {
+                contentContainer.classList.add('hidden');
+                noResults.classList.remove('hidden');
+            } else {
+                contentContainer.classList.remove('hidden');
+                noResults.classList.add('hidden');
+            }
+
+            lucide.createIcons();
+        }
+
+        // Initial render
+        renderCategories();
+
+        // Search functionality
+        searchInput.addEventListener('input', (e) => {
+            renderCategories(e.target.value);
+        });
+
+    </script>
+</body>
+</html>
